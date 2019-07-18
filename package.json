@@ -1,0 +1,20 @@
+{
+  "name": "mesh-order-poster",
+  "version": "0.0.0",
+  "description": "Small tool for poster orders to the 0x mesh network (for testing purposes).",
+  "main": "src/index.js",
+  "repository": "https://github.com/ParadigmFoundation/mesh-order-poster",
+  "author": "Henry Harder",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "node src/index.js",
+    "start:delay": "sleep 5 && yarn start"
+  },
+  "dependencies": {
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
+    "uuid": "^3.3.2",
+    "ws": "^7.1.0"
+  }
+}

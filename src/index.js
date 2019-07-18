@@ -1,0 +1,70 @@
+const request = require("request-promise-native");
+const uuid = require("uuid/v4");
+const WebSocket = require("ws");
+
+const {
+    MESH_RPC_URL,
+    ORDER_CREATOR_URL,
+    ASSET_A_ADDRESS,
+    ASSET_B_ADDRESS,
+
+    // default to stopping after 1 hour
+    STOP_TIMESTAMP = Math.floor(Date.now() + (1000 /* ms */ * 60 /* s */ * 60 /* m */ * 1 /* hr */)).toString()
+} = process.env;
+
+main().then(() => process.exitCode = 0);
+
+async function main() {
+    let ws;
+    await new Promise((r, _) => {
+        ws = new WebSocket(MESH_RPC_URL);
+        ws.on("open", r);
+        ws.on("message", (m) => {
+            console.log(`Message from server: ${m}`);
+        });
+    });
+
+    let bid = true;
+    const stopAt = Number(STOP_TIMESTAMP);
+    console.log(ASSET_A_ADDRESS)
+
+    // main loop - get an order with random price/size, and submit to mesh RPC
+    while (Math.floor(Date.now()) < stopAt) {
+        const randPrice = Math.random() * 100
+        const randSize = Math.random() * 10
+        const side = bid ? "bid" : "ask";
+
+        // get an order of the other side next time
+        bid = !bid;
+
+        const response = await request(`${ORDER_CREATOR_URL}/create`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: createRequest(side, randPrice, randSize),
+        });
+        const { order } = JSON.parse(response);
+        await postToMesh(ws, order);
+        await new Promise((r, _) => setTimeout(r, 1500));
+    }
+}
+
+async function postToMesh(ws, order) {
+    const message = {
+        jsonrpc: "2.0",
+        id: uuid(),
+        method: "mesh_addOrders",
+        params: [[order]]
+    };
+    ws.send(JSON.stringify(message));
+}
+
+function createRequest(side, price, size) {
+    return JSON.stringify({
+        baseAsset: ASSET_A_ADDRESS,
+        quoteAsset: ASSET_B_ADDRESS,
+        expiration: Math.floor(Date.now() / 1000) + 600,
+        size,
+        price,
+        side,
+    });
+};
