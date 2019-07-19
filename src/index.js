@@ -14,7 +14,7 @@ const {
     MAKER_ADDRESS,
 
     // default to stopping after 1 hour
-    STOP_TIMESTAMP_MS = Math.floor(Date.now() + (1000 /* ms */ * 60 /* s */ * 60 /* m */ * 1 /* hr */)).toString(),
+    STOP_TIMESTAMP_MS = Math.floor(Date.now() + 360000).toString(),
 
     // set to truthy val if allowances should be set
     SET_ALLOWANCES = false,
