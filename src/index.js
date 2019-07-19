@@ -80,7 +80,9 @@ async function postToMesh(ws, order) {
 // set an unlimit ERC-20 proxy allowance for each tokenAddress
 async function setUnlimitedProxyAllowances(holder, tokenAddresses) {
     const web3 = new Web3(WEB3_URL);
-    const wrappers = new ContractWrappers(web3.currentProvider);
+    const wrappers = new ContractWrappers(web3.currentProvider, {
+        networkId: await web3.eth.net.getId(),
+    });
     for (let address of tokenAddresses) {
         await wrappers.erc20Token.setUnlimitedProxyAllowanceAsync(address, holder);
     }
