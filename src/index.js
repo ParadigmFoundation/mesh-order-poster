@@ -49,7 +49,7 @@ async function main() {
 
     // main loop - get an order with random price/size, and submit to mesh RPC
     while (Math.floor(Date.now()) < stopAt) {
-        const randPrice = Math.random() * 100
+        const randPrice = Math.random() * 1
         const randSize = Math.random() * 10
         const side = bid ? "bid" : "ask";
 
