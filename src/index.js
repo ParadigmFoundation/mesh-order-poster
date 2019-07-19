@@ -2,19 +2,31 @@ const request = require("request-promise-native");
 const uuid = require("uuid/v4");
 const WebSocket = require("ws");
 
+const { ContractWrappers } = require("@0x/contract-wrappers");
+
 const {
     MESH_RPC_URL,
     ORDER_CREATOR_URL,
     ASSET_A_ADDRESS,
     ASSET_B_ADDRESS,
+    MAKER_ADDRESS,
 
     // default to stopping after 1 hour
     STOP_TIMESTAMP = Math.floor(Date.now() + (1000 /* ms */ * 60 /* s */ * 60 /* m */ * 1 /* hr */)).toString()
 } = process.env;
 
-main().then(() => process.exitCode = 0);
+main()
+    .then(() => {
+        process.exitCode = 0
+    })
+    .catch((e) => {
+        console.error(`fatal error: ${e}`);
+        process.exitCode = 1;
+    });
 
 async function main() {
+    await setUnlimitedProxyAllowances(MAKER_ADDRESS, [ASSET_A_ADDRESS, ASSET_B_ADDRESS]);
+
     let ws;
     await new Promise((r, _) => {
         ws = new WebSocket(MESH_RPC_URL);
@@ -56,6 +68,14 @@ async function postToMesh(ws, order) {
         params: [[order]]
     };
     ws.send(JSON.stringify(message));
+}
+
+async function setUnlimitedProxyAllowances(holder, tokenAddresses) {
+    const web3 = new Web3(WEB3_URL);
+    const wrappers = new ContractWrappers(web3.currentProvider);
+    for (let address of tokenAddresses) {
+        await wrappers.erc20Token.setUnlimitedProxyAllowanceAsync(address, holder);
+    }
 }
 
 function createRequest(side, price, size) {

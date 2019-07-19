@@ -12,9 +12,11 @@
     "start:delay": "sleep 5 && yarn start"
   },
   "dependencies": {
+    "@0x/contract-wrappers": "^9.1.7",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "uuid": "^3.3.2",
+    "web3": "1.0.0-beta.37",
     "ws": "^7.1.0"
   }
 }

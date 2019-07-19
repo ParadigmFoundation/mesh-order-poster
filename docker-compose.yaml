@@ -5,6 +5,7 @@ services:
     container_name: order-creator
     image: gcr.io/zaidan-io/order-creator:latest
     environment:
+      # Set WEB3_URL prior to deploying
       - WEB3_URL=
       - PORT=42001
       - DISABLE_SENDER=true
@@ -16,11 +17,13 @@ services:
       dockerfile: Dockerfile
     depends_on: ["order-creator"]
     environment:
-      # Set MESH_RPC_URL prior to deploying
+      # Set MESH_RPC_URL and WEB3_URL prior to deploying
+      - WEB3_URL=
       - MESH_RPC_URL=
+      - MAKER_ADDRESS=
       - ORDER_CREATOR_URL=http://order-creator:42001
 
-      # default is ZRX (A) and WETH (B) on the Ropsten network, switch if needed
+      # default is ZRX (A) and TST (B) on the Ropsten network, switch if needed
       - ASSET_A_ADDRESS=0xff67881f8d12f372d91baae9752eb3631ff0ed00
-      - ASSET_B_ADDRESS=0xc778417e063141139fce010982780140aa0cd5ab
+      - ASSET_B_ADDRESS=0x722dd3f80bac40c951b51bdd28dd19d435762180
       
