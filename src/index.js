@@ -2,6 +2,7 @@ const request = require("request-promise-native");
 const uuid = require("uuid/v4");
 const WebSocket = require("ws");
 
+const Web3 = require("web3");
 const { ContractWrappers } = require("@0x/contract-wrappers");
 
 const {
