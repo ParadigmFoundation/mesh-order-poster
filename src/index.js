@@ -55,12 +55,17 @@ async function main() {
             headers: { "Content-Type": "application/json" },
             body: createRequest(side, randPrice, randSize),
         });
+
+        // send order to mesh
         const { order } = JSON.parse(response);
         await postToMesh(ws, order);
+
+        // wait 1.5s until the next order
         await new Promise((r, _) => setTimeout(r, 1500));
     }
 }
 
+// send a JSONRPC request to a mesh node to add an order
 async function postToMesh(ws, order) {
     const message = {
         jsonrpc: "2.0",
@@ -71,6 +76,7 @@ async function postToMesh(ws, order) {
     ws.send(JSON.stringify(message));
 }
 
+// set an unlimit ERC-20 proxy allowance for each tokenAddress
 async function setUnlimitedProxyAllowances(holder, tokenAddresses) {
     const web3 = new Web3(WEB3_URL);
     const wrappers = new ContractWrappers(web3.currentProvider);
@@ -79,6 +85,7 @@ async function setUnlimitedProxyAllowances(holder, tokenAddresses) {
     }
 }
 
+// create a request for the order-creator
 function createRequest(side, price, size) {
     return JSON.stringify({
         baseAsset: ASSET_A_ADDRESS,
