@@ -22,7 +22,7 @@ const {
 
 main()
     .then(() => {
-        process.exitCode = 0
+        process.exitCode = 0;
     })
     .catch((e) => {
         console.error(`fatal error: ${e}`);
@@ -49,8 +49,8 @@ async function main() {
 
     // main loop - get an order with random price/size, and submit to mesh RPC
     while (Math.floor(Date.now()) < stopAt) {
-        const randPrice = Math.random() * 1
-        const randSize = Math.random() * 10
+        const randPrice = Math.random() * 1;
+        const randSize = Math.random() * 10;
         const side = bid ? "bid" : "ask";
 
         // get an order of the other side next time
