@@ -89,12 +89,7 @@ async function setUnlimitedProxyAllowances(holder, tokenAddresses) {
         networkId: await web3.eth.net.getId(),
     });
     for (let address of tokenAddresses) {
-        try {
-            await wrappers.erc20Token.setUnlimitedProxyAllowanceAsync(address, holder);
-        } catch (error) {
-            console.log(error);
-            throw new Error(error.message);
-        }
+        await wrappers.erc20Token.setUnlimitedProxyAllowanceAsync(address, holder);
     }
 }
 
