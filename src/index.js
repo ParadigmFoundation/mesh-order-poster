@@ -6,6 +6,7 @@ const Web3 = require("web3");
 const { ContractWrappers } = require("@0x/contract-wrappers");
 
 const {
+    WEB3_URL,
     MESH_RPC_URL,
     ORDER_CREATOR_URL,
     ASSET_A_ADDRESS,
