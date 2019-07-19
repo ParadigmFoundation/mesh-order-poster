@@ -14,7 +14,10 @@ const {
     MAKER_ADDRESS,
 
     // default to stopping after 1 hour
-    STOP_TIMESTAMP_MS = Math.floor(Date.now() + (1000 /* ms */ * 60 /* s */ * 60 /* m */ * 1 /* hr */)).toString()
+    STOP_TIMESTAMP_MS = Math.floor(Date.now() + (1000 /* ms */ * 60 /* s */ * 60 /* m */ * 1 /* hr */)).toString(),
+
+    // set to truthy val if allowances should be set
+    SET_ALLOWANCES = false,
 } = process.env;
 
 main()
@@ -27,7 +30,9 @@ main()
     });
 
 async function main() {
-    await setUnlimitedProxyAllowances(MAKER_ADDRESS, [ASSET_A_ADDRESS, ASSET_B_ADDRESS]);
+    if (SET_ALLOWANCES) {
+        await setUnlimitedProxyAllowances(MAKER_ADDRESS, [ASSET_A_ADDRESS, ASSET_B_ADDRESS]);
+    }
 
     let ws;
     await new Promise((r, _) => {
