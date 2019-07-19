@@ -42,7 +42,11 @@ async function main() {
         ws = new WebSocket(MESH_RPC_URL);
         ws.on("open", r);
         ws.on("message", (m) => {
-            console.log(`Message from server: ${m}`);
+            const res = JSON.parse(m);
+            if (res.result && res.result.accepted.length != 0) {
+                const txIds = res.result.accepted.map(v => v.orderHash);
+                console.log(`Accepted orders with txIds: ${JSON.stringify(txIds)}`);
+            }
         });
     });
 
