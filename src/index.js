@@ -13,10 +13,13 @@ const {
     ASSET_B_ADDRESS,
     MAKER_ADDRESS,
 
+    // default to 10 minute order validity
+    ORDER_DURATION_SECONDS = 600,
+
     // default to stopping after 1 hour
     STOP_TIMESTAMP_MS = Math.floor(Date.now() + 360000).toString(),
 
-    // set to truthy val if allowances should be set
+    // default to NOT setting allowances for configured tokens
     SET_ALLOWANCES = false,
 } = process.env;
 
@@ -98,7 +101,7 @@ function createRequest(side, price, size) {
     return JSON.stringify({
         baseAsset: ASSET_A_ADDRESS,
         quoteAsset: ASSET_B_ADDRESS,
-        expiration: Math.floor(Date.now() / 1000) + 600,
+        expiration: Math.floor(Date.now() / 1000) + Number(ORDER_DURATION_SECONDS),
         size,
         price,
         side,

@@ -17,13 +17,16 @@ services:
       dockerfile: Dockerfile
     depends_on: ["order-creator"]
     environment:
+      - ORDER_CREATOR_URL=http://order-creator:42001
+
       # Set MESH_RPC_URL and WEB3_URL prior to deploying
       - WEB3_URL=
       - MESH_RPC_URL=
       - MAKER_ADDRESS=
-      - ORDER_CREATOR_URL=http://order-creator:42001
+  
+      # Change order duration (in seconds)
+      - ORDER_DURATION_SECONDS=
 
-      # default is ZRX (A) and TST (B) on the Ropsten network, switch if needed
+      # default is ZRX (A) and TST (B) on the Ropsten network, change if needed
       - ASSET_A_ADDRESS=0xff67881f8d12f372d91baae9752eb3631ff0ed00
       - ASSET_B_ADDRESS=0x722dd3f80bac40c951b51bdd28dd19d435762180
-      
