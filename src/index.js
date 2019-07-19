@@ -13,7 +13,7 @@ const {
     MAKER_ADDRESS,
 
     // default to stopping after 1 hour
-    STOP_TIMESTAMP = Math.floor(Date.now() + (1000 /* ms */ * 60 /* s */ * 60 /* m */ * 1 /* hr */)).toString()
+    STOP_TIMESTAMP_MS = Math.floor(Date.now() + (1000 /* ms */ * 60 /* s */ * 60 /* m */ * 1 /* hr */)).toString()
 } = process.env;
 
 main()
@@ -37,9 +37,9 @@ async function main() {
         });
     });
 
+    // start with posting bids, switch each time
     let bid = true;
-    const stopAt = Number(STOP_TIMESTAMP);
-    console.log(ASSET_A_ADDRESS)
+    const stopAt = Number(STOP_TIMESTAMP_MS);
 
     // main loop - get an order with random price/size, and submit to mesh RPC
     while (Math.floor(Date.now()) < stopAt) {
